@@ -10,7 +10,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.24.0"
+  },
   "devDependencies": {
     "parcel": "^2.0.0"
   }
