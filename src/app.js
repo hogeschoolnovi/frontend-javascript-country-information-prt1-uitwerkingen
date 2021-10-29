@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-// sla de referentie op naar ons 'anker' element, de <ul> met id country-list
-const countryList = document.getElementById('country-list');
-
 async function fetchCountries() {
   try {
     const result = await axios.get('https://restcountries.com/v2/all');
@@ -24,35 +21,35 @@ async function fetchCountries() {
 fetchCountries();
 
 function createListItems(countries) {
-  // dit had ook gemogen met een for-loop, maar het is gebruikelijker om hier map voor te gebruiken
-  countries.map((country) => {
-    // <li> element maken om alle informatie in op te slaan
-    const countryElement = document.createElement('li');
+  // sla de referentie op naar ons 'anker' element, de <ul> met id country-list
+  const countryList = document.getElementById('country-list');
 
-    // <img> element maken voor de vlag
-    const flagElement = document.createElement('img');
-    flagElement.setAttribute('src', country.flag);
-    flagElement.setAttribute('class', 'flag');
-    // <img> aan ons <li> element toevoegen
-    countryElement.appendChild(flagElement);
+  // OPTIE 1
+  countryList.innerHTML = countries.map((country) => {
+    return `
+      <li>
+        <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
+        <span class="${getRegionClass(country.region)}">${country.name}</span>
+        <p class="population">Has a population of ${country.population} people</p>
+      </li>
+    `;
+  }).join('');
 
-    // <span> element voor de naam
-    const countryNameElement = document.createElement('span');
-    countryNameElement.textContent = country.name;
-    // we voegen een specifieke class toe op basis van de region, die het land een kleur geeft
-    countryNameElement.setAttribute('class', getRegionClass(country.region));
-    // <span> aan ons <li> element toevoegen
-    countryElement.appendChild(countryNameElement);
-
-    // <p> element voor de populatie
-    const populationText = document.createElement('p');
-    populationText.setAttribute('class', 'population');
-    populationText.textContent = `Has a population of ${country.population} people`;
-    // voeg <p> element toe aan <li> element
-    countryElement.appendChild(populationText);
-
-    countryList.appendChild(countryElement);
-  });
+  // OPTIE 2 (dit had overigens ook gekunt met een for-loop!)
+  // countries.map((country) => {
+  //   // maak een li-element aan
+  //   const countryElement = document.createElement('li');
+  //
+  //   // stop er een afbeelding, span en p in
+  //   countryElement.innerHTML = `
+  //     <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
+  //     <span class="${getRegionClass(country.region)}">${country.name}</span>
+  //     <p class="population">Has a population of ${country.population} people</p>
+  //   `;
+  //
+  //   // voeg het list-element toe aan het ul-element
+  //   countryList.appendChild(countryElement);
+  // });
 }
 
 // deze functie wordt voor elk land opnieuw aangeroepen en krijgt dan de region mee. Op basis daarvan
